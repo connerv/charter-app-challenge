@@ -6,7 +6,7 @@ function Table({ restaurants }){
     }
 
     return( 
-        <table className={"u-full-width"}>
+        <table className={"table table-dark"}>
         <TableHead handleClick={handleClick}></TableHead>
         <tbody>
 
