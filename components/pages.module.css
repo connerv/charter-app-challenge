@@ -1,0 +1,8 @@
+.display{
+    display: table-row-group;
+}
+
+.nodisplay{
+    display: none;
+}
+

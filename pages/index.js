@@ -32,7 +32,6 @@ export async function getStaticProps() {
     },
    });
   const restaurants = await res.json()
-  console.log(restaurants[0])
   return {
     props: {
       restaurants,

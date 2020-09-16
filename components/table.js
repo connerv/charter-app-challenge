@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { createRef, useEffect, useRef } from 'react'
 import styles from './table.module.css'
 import SelectState from './select-state'
 import SelectGenre from './select-genre'
+import Pages from './pages'
 
 
 const useSortableData = (items, config = null) => {
@@ -92,12 +93,8 @@ const useSortableData = (items, config = null) => {
 
 function Table({ restaurants }){
     const { sortedRestaurants, changeSortMethod, changeFilterMethod, changeSearchValue, sortMethod } = useSortableData(restaurants);
-    const [pageState, setPageState] = React.useState(null)
     
-    const totalRestaurants = sortedRestaurants.length
-    const pageLength = 10
-
-    const totalPages = Math.ceil( totalRestaurants / pageLength)
+    const childRef = useRef()
 
     const getClassNamesFor = (name) => {
         if (!sortMethod) {
@@ -105,21 +102,32 @@ function Table({ restaurants }){
         }
         return sortMethod.key === name ? `${sortMethod.direction} ${styles.sortable} ` : styles.sortable;
     };
-      
+     
+    const changeParams = () =>{
+    
+        if(childRef.current) {
+            
+            childRef.current.reset()
+        }
+    }
+
     const stateSelected = (e) =>{
+        
         changeFilterMethod('state',e.target.value)
+        changeParams()
     }
     const genreSelected = (e) =>{
         changeFilterMethod('genre',e.target.value)
+        changeParams()
     }
     const searchEntry = (e) =>{
        changeSearchValue(e.target.value)
+       changeParams()
     }
-
+    
     useEffect(()=>{
         changeSortMethod('name')
-        setPageState({currentPage: 1})
-      }, [])
+    }, [])
 
       
 
@@ -138,19 +146,9 @@ function Table({ restaurants }){
 
             </tr>
         </thead>
-        <tbody>
-
-            {sortedRestaurants.map((restaurant) => (
-            <tr key={restaurant.id}>
-                <td>{restaurant.name}</td>
-                <td>{restaurant.city}</td>
-                <td>{restaurant.state}</td>
-                <td>{restaurant.telephone}</td>
-                <td>{restaurant.genre}</td>
-            </tr>
-            ))}
-
-        </tbody>
+        
+        <Pages ref={childRef} restaurants={sortedRestaurants}  ></Pages>
+        
         
       </table>
     )
