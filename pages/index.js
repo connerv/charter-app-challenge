@@ -10,7 +10,7 @@ export default function Home({ restaurants }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>Charter/Spectrum Code Challenge</h2>
-      <div className={"container"}>
+      <div className={"container-fluid"}>
         <div className={"row"}>
           <Table restaurants={restaurants}></Table>
         </div>
