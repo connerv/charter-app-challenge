@@ -22,7 +22,7 @@ const useSortableData = (items, config = null) => {
                 });
             
                 if(sortMethod.stateFilter && sortMethod.stateFilter !== 'all'){
-                    console.log('here')
+                   
                     let pickArray = sortableRestaurants.filter(item => item['state'].includes(sortMethod.stateFilter))
                     if(pickArray.length > 0){
                         sortableRestaurants = pickArray
@@ -31,14 +31,29 @@ const useSortableData = (items, config = null) => {
                     }
                 } 
                 if(sortMethod.genreFilter && sortMethod.genreFilter !== 'all'){
-                    console.log('here')
+                    
                     let pickArray = sortableRestaurants.filter(item => item['genre'].includes(sortMethod.genreFilter))
                     if(pickArray.length > 0){
                         sortableRestaurants = pickArray
                     } else {
                         sortableRestaurants = [{name: "No Restuarants Match", city: "", state: "", telephone: "", genre: "", id:"1"}]
                     }
-                }  
+                } 
+                if(sortMethod.searchValue && sortMethod.searchValue !== ''){
+                    
+                    let pickArray = sortableRestaurants.filter(restaurant => {
+                        for (const key in restaurant) {
+                           if(restaurant[key].toLowerCase().includes(sortMethod.searchValue.toLowerCase())){
+                               return true
+                           }
+                        }
+                    })
+                    if(pickArray.length > 0){
+                        sortableRestaurants = pickArray
+                    } else {
+                        sortableRestaurants = [{name: "No Restuarants Match", city: "", state: "", telephone: "", genre: "", id:"1"}]
+                    }
+                }   
             
         }
         return sortableRestaurants;
@@ -64,43 +79,55 @@ const useSortableData = (items, config = null) => {
         }else if(key === 'genre'){
             setSortMethod((prevState) => ({...prevState, genreFilter: val}))
         }
-        
+    }
 
-        
-        
+    const changeSearchValue = (val) => {
+        setSortMethod((prevState) => ({...prevState, searchValue: val}))
     }
     
-    return {sortedRestaurants: sortedRestaurants, changeSortMethod, changeFilterMethod, sortMethod};
+    return {sortedRestaurants: sortedRestaurants, changeSortMethod, changeFilterMethod, changeSearchValue, sortMethod};
 }
 
 
 
 function Table({ restaurants }){
-    const { sortedRestaurants, changeSortMethod, changeFilterMethod, sortMethod } = useSortableData(restaurants);
+    const { sortedRestaurants, changeSortMethod, changeFilterMethod, changeSearchValue, sortMethod } = useSortableData(restaurants);
+    const [pageState, setPageState] = React.useState(null)
+    
+    const totalRestaurants = sortedRestaurants.length
+    const pageLength = 10
+
+    const totalPages = Math.ceil( totalRestaurants / pageLength)
+
     const getClassNamesFor = (name) => {
         if (!sortMethod) {
           return styles.sortable;
         }
         return sortMethod.key === name ? `${sortMethod.direction} ${styles.sortable} ` : styles.sortable;
-      };
+    };
       
-      useEffect(()=>{
-        changeSortMethod('name')
-      }, [])
-
     const stateSelected = (e) =>{
         changeFilterMethod('state',e.target.value)
     }
     const genreSelected = (e) =>{
         changeFilterMethod('genre',e.target.value)
     }
+    const searchEntry = (e) =>{
+       changeSearchValue(e.target.value)
+    }
+
+    useEffect(()=>{
+        changeSortMethod('name')
+        setPageState({currentPage: 1})
+      }, [])
+
       
 
     return( 
         <table className={"table table-dark"}>
         <thead>
             <tr >
-                <th>Search:</th>
+                <th>Search:<input type="text" className="form-control" onChange={searchEntry}></input></th>
             </tr>
             <tr>
                 <th><u className={getClassNamesFor('name')} onClick={(e) => changeSortMethod('name')}>Name</u></th>
