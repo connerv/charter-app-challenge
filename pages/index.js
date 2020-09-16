@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Table from '../components/table'
 
 export default function Home({ restaurants }) {
   return (
@@ -9,13 +10,7 @@ export default function Home({ restaurants }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>Charter/Spectrum Code Challenge</h2>
-
-      <ul>
-      {restaurants.map((restaurant) => (
-        <li key={restaurant.id}>{restaurant.name}</li>
-      ))}
-    </ul>
-
+      <Table data={restaurants}></Table>
       
 
       <footer className={styles.footer}>
@@ -34,7 +29,7 @@ export async function getStaticProps() {
     },
    });
   const restaurants = await res.json()
-  console.log(restaurants)
+  console.log(restaurants[0])
   return {
     props: {
       restaurants,
