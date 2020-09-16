@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Table from '../components/table'
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import Table from "../components/table";
 
 export default function Home({ restaurants }) {
   return (
@@ -16,26 +16,24 @@ export default function Home({ restaurants }) {
         </div>
       </div>
 
-      <footer className={styles.footer}>
-       
-          Conner Vick 2020
-      
-      </footer>
+      <footer className={styles.footer}>Conner Vick 2020</footer>
     </div>
-  )
+  );
 }
 
 export async function getStaticProps() {
-  const res = await fetch('https://code-challenge.spectrumtoolbox.com/api/restaurants', {
-    headers: {
-    Authorization: 'Api-Key q3MNxtfep8Gt',
-    },
-   });
-  const restaurants = await res.json()
+  const res = await fetch(
+    "https://code-challenge.spectrumtoolbox.com/api/restaurants",
+    {
+      headers: {
+        Authorization: "Api-Key q3MNxtfep8Gt",
+      },
+    }
+  );
+  const restaurants = await res.json();
   return {
     props: {
       restaurants,
     },
-  }
+  };
 }
-
