@@ -10,8 +10,11 @@ export default function Home({ restaurants }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>Charter/Spectrum Code Challenge</h2>
-      <Table data={restaurants}></Table>
-      
+      <div className={"container"}>
+        <div className={"row"}>
+          <Table restaurants={restaurants}></Table>
+        </div>
+      </div>
 
       <footer className={styles.footer}>
        

@@ -1,13 +1,27 @@
+import TableHead from './tableHead'
 
+function Table({ restaurants }){
+    function handleClick(e,val){
+        console.log(val)
+    }
 
-
-function Table({ data }){
     return( 
         <table className={"u-full-width"}>
+        <TableHead handleClick={handleClick}></TableHead>
+        <tbody>
 
-        {data.map((restaurant) => (
-          <tr key={restaurant.id}><td>{restaurant.name}</td></tr>
-        ))}
+            {restaurants.map((restaurant) => (
+            <tr key={restaurant.id}>
+                <td>{restaurant.name}</td>
+                <td>{restaurant.city}</td>
+                <td>{restaurant.state}</td>
+                <td>{restaurant.telephone}</td>
+                <td>{restaurant.genre}</td>
+            </tr>
+            ))}
+
+        </tbody>
+        
       </table>
     )
 }

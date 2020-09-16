@@ -1,13 +1,15 @@
-function TableHead({ data }){
+import styles from './tableHead.module.css'
+
+function TableHead({ handleClick }){
     return( 
         <thead>
             <tr>
-                
-                <th>Name</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Phone Number</th>
-                <th>Genres</th>
+
+                <th className={styles.sortable} onClick={(e) => handleClick(e,"name")}>Name</th>
+                <th className={styles.sortable} onClick={(e) => handleClick(e,"city")}>City</th>
+                <th className={styles.sortable} onClick={(e) => handleClick(e,"state")}>State</th>
+                <th className={styles.sortable} onClick={(e) => handleClick(e,"phone")}>Phone Number</th>
+                <th className={styles.sortable} onClick={(e) => handleClick(e,"genres")}>Genres</th>
 
             </tr>
         </thead>
